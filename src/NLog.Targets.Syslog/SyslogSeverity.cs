@@ -79,7 +79,7 @@ namespace NLog.Targets
             if (logLevel == LogLevel.Trace)
                 return Notice;
 
-            throw new InvalidOperationException($"Unsupported log level {logLevel}");
+            throw new InvalidOperationException(String.Format("Unsupported log level {0}",logLevel));
         }
 
         /// <summary>Convert a syslog severity to a string</summary>

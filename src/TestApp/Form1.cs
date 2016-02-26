@@ -35,7 +35,7 @@ namespace TestApp
                     Logger.Fatal("This is a sample fatal message");
                     break;
                 default:
-                    throw new InvalidOperationException($"Button name '{btn.Name}' is not supported");
+                    throw new InvalidOperationException(String.Format("Button name '{0}' is not supported", btn.Name));
             }
         }
     }

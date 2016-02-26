@@ -79,7 +79,7 @@ namespace NLog.Targets
         #region RFC 5424 members
 
         /// <summary>Syslog protocol version for RFC 5424</summary>
-        private byte ProtocolVersion { get; }
+        private byte ProtocolVersion { get; set;  }
 
         /// <summary>Layout for PROCID protocol field</summary>
         public Layout ProcId { get; set; }
@@ -168,7 +168,7 @@ namespace NLog.Targets
                     }
                     break;
                 default:
-                    throw new NLogConfigurationException($"Protocol '{Protocol}' is not supported.");
+                    throw new NLogConfigurationException(String.Format("Protocol '{0}' is not supported.",Protocol));
             }
         }
 
@@ -223,7 +223,7 @@ namespace NLog.Targets
             // Get sender
             var sender = Sender.Render(logEvent);
 
-            return Encoding.ASCII.GetBytes($"<{priority}>{time} {machine} {sender}: {body}{Environment.NewLine}");
+            return Encoding.ASCII.GetBytes(String.Format("<{0}>{1} {2} {3}: {4}{5}", priority, time,machine,sender,body,Environment.NewLine));
         }
 
         /// <summary>Builds rfc-5424 compatible message</summary>
@@ -244,7 +244,7 @@ namespace NLog.Targets
             var procId = Left(ProcId.Render(logEvent), 128);
             var msgId = Left(MsgId.Render(logEvent), 32);
 
-            var headerData = Encoding.ASCII.GetBytes($"<{priority}>{version} {time} {machine} {sender} {procId} {msgId} ");
+            var headerData = Encoding.ASCII.GetBytes(String.Format("<{0}>{1} {2} {3} {4} {5} {6} ",priority,version,time,machine,sender,procId, msgId));
             var structuredData = Encoding.UTF8.GetBytes(StructuredData.Render(logEvent) + " ");
             var messageData = Encoding.UTF8.GetBytes(body);
 
